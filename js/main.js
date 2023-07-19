@@ -50,10 +50,10 @@ const genAvatar = () => {
 const buildOffer = (location) => ({
   title: TITLE,
   address: `${location.lat} - ${location.lng}`,
-  price:+genRandomNumb(1,MAX_PRICE),
+  price: Number(genRandomNumb(1,MAX_PRICE)),
   type: arrayRandElement(TYPE_HOUSING_ARR),
   rooms:  +genRandomNumb(1,MAX_ROOMS),
-  guests:  +genRandomNumb(1,MAX_GUESTS),
+  guests:  +genRandomNumb(1,MAX_GUESTS)),
   checkout: arrayRandElement(CHECKOUT_ARR),
   features: arrayRandElement(FEATURES_ARR),
   description: DESC_HOUSE,
