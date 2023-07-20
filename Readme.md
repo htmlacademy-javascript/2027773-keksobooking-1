@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Сергей Курдюков](https://up.htmlacademy.ru/javascript-individual/1/user/2027773).
-* Наставник: Алексей Хабиров.
+* Наставник: [Алексей Хабиров](https://htmlacademy.ru/profile/id963185).
 
 ---
 
