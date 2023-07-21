@@ -1,3 +1,38 @@
+const generationRandomNumber = (min, max) => {
+  const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return randomNumber;
+};
+
+const getRandomArr = (arr) => {
+  const randomLength = generationRandomNumber(0, arr.length);
+  const randomArr = [];
+
+  for (let i = 0; i < randomLength; i++){
+    randomArr.push(arr[i]);
+  }
+
+  return randomArr.sort();
+};
+
+const getArrayRandElement = (arr) => {
+  const rand = Math.floor(Math.random() * arr.length);
+
+  return arr[rand];
+};
+
+const getRandomNumber = (min, max, numbAfter) => {
+
+  if (min < 0 || max < 0) {
+
+    return NaN;
+  }
+
+  const randomNumber = Math.random() * (max - min) + min;
+
+  return Number(randomNumber.toFixed(numbAfter));
+};
+
 const checksStringLength = (string, length) => {
   if (string.length <= length) {
     return true;
@@ -48,12 +83,4 @@ const getString = function (string, minLength, addStr) {
 };
 getString('1', 4, '0333');
 
-const getRandomNumb = (min, max, numbAfter) => {
-  if(min >= 0 && max >= 0) {
-    const randomNumb = Math.random() * (max - min + 1) + min;
-    Number(randomNumb.toFixed(numbAfter));
-  } else {
-    return NaN;
-  }
-};
-getRandomNumb(90,50,40);
+export { generationRandomNumber, getRandomArr, getArrayRandElement, getRandomNumber };
