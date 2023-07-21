@@ -41,7 +41,7 @@ const checksStringLength = (string, length) => {
   }
 };
 
-checksStringLength('проверяемая строка', 55);
+checksStringLength('проверяемая строка', 5);
 
 const definesPolydrome = (string) => {
   const stringNormal = string.replaceAll(' ','').toLowerCase();
