@@ -1,6 +1,6 @@
 import { generationRandomNumber, getRandomArr, getArrayRandElement, getRandomNumber } from './util.js';
 
-const OFFER_COUNT = 1;
+const OFFER_COUNT = 10;
 const TITLE = 'Заголовок';
 const LAT_MIN = 35.65;
 const LAT_MAX = 35.7;
@@ -19,6 +19,11 @@ const CHECKOUT = [
   '13:00',
   '14:00'
 ];
+const CHECKIN = [
+  '12:00',
+  '13:00',
+  '14:00'
+];
 const FEATURES = [
   'wifi',
   'dishwasher',
@@ -31,7 +36,7 @@ const DESC_HOUSE = 'помещение огонь';
 const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 const MAX_ROOMS = 10;
 const MAX_GUESTS = 10;
@@ -59,10 +64,11 @@ const buildOffer = (location) => ({
   type: getArrayRandElement(TYPE_HOUSING),
   rooms:  generationRandomNumber(1, MAX_ROOMS),
   guests:  generationRandomNumber(1, MAX_GUESTS),
+  checkin:getArrayRandElement(CHECKIN),
   checkout: getArrayRandElement(CHECKOUT),
   features: getRandomArr(FEATURES),
   description: DESC_HOUSE,
-  photos: getRandomArr(PHOTOS)
+  photos: PHOTOS
 });
 
 const buildLocation = () => ({
