@@ -86,6 +86,6 @@ const buildBookingOffer = () => {
   };
 };
 
-const offersBooking = () => Array.from ({length: OFFER_COUNT}, buildBookingOffer);
+const generateOffers = () => Array.from ({length: OFFER_COUNT}, buildBookingOffer);
 
-export { offersBooking };
+export { generateOffers };

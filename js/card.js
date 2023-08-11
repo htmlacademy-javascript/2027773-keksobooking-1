@@ -1,61 +1,74 @@
-import { offersBooking } from './data.js';
+import {getNoun} from './util.js';
 
 const card = document.querySelector ('#card').content.querySelector('.popup');
-const cardContainer = document.querySelector ('#map-canvas');
-const cloneCard = card.cloneNode(true);
-const arrayCards = offersBooking ();
 
-const createPhotoList = (element)=> {
-  const photo = cloneCard.querySelector('.popup__photo');
-  const photoContainer = cloneCard.querySelector ('.popup__photos');
-  const arrayPhoto = element.offer.photos;
-  photoContainer.innerHTML = '';
+const typeHouseDict = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель'
+};
 
-  for (let i = 0; i < arrayPhoto.length; i++) {
-    const cloneImg = photo.cloneNode(true);
-    cloneImg.src = element.offer.photos[i];
-    photoContainer.append(cloneImg);
+const hidesBlock = (block, content) => {
+
+  if (!content || content.length === 0) {
+    block.style.display = 'none';
+
   }
 
 };
 
-const createTypeHousing = (element) => {
-  const objTypeHousingRu = {
-    palace: 'Дворец',
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalow: 'Бунгало',
-    hotel: 'Отель'
-  };
-  const typeHousingEng = element.offer.type;
-  cloneCard.querySelector('.popup__type').textContent = objTypeHousingRu[typeHousingEng];
+
+const createPhotoList = (element, photos)=> {
+  const imgItem = element.querySelector('.popup__photo');
+  const photoContainer = element.querySelector ('.popup__photos');
+  hidesBlock(photoContainer, photos);
+  photoContainer.innerHTML = '';
+
+  photos.forEach ((photo) => {
+    const cloneImg = imgItem.cloneNode(true);
+    cloneImg.src = photo;
+    photoContainer.append(cloneImg);
+  }
+  );
+
 };
 
-const createFeatureList = (element) => {
-  const arrayFeatures = element.offer.features;
-  const featureList = cloneCard.querySelectorAll('.popup__feature');
-  const modifiers = arrayFeatures.map((arrayFeature) => `popup__feature--${ arrayFeature}`);
 
-  featureList.forEach((featureListItem) => {
-    const modifier = featureListItem.classList[1];
+const createFeatureList = (element, features) => {
+  const featureContainer = element.querySelector('.popup__features');
+  const featureItem = element.querySelector('.popup__feature');
+  hidesBlock(featureContainer, features);
+  featureContainer.innerHTML = '';
 
-    if (!modifiers.includes(modifier)) {
-      featureListItem.remove();
-    }
+  features.forEach ((feature) => {
+    const cloneFeature = featureItem.cloneNode(true);
+    cloneFeature.classList = `popup__feature popup__feature--${ feature}`;
+    featureContainer.append(cloneFeature);
   });
+
 };
 
-const createCard = (element) => {
-  cloneCard.querySelector('.popup__avatar').src = element.author.avatar;
-  cloneCard.querySelector('.popup__title').textContent = element.offer.title;
-  cloneCard.querySelector('.popup__text--address').textContent = element.offer.address;
-  cloneCard.querySelector('.popup__text--price').textContent = `${element.offer.price} ₽/ночь`;
-  cloneCard.querySelector('.popup__text--capacity').textContent = `${element.offer.rooms} комнаты для ${element.offer.guests} гостей`;
-  cloneCard.querySelector('.popup__text--time').textContent = `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`;
-  cloneCard.querySelector('.popup__description').textContent = element.offer.description;
-  createTypeHousing(element);
-  createPhotoList(element);
-  createFeatureList(element);
-  cardContainer.appendChild(cloneCard);
+const createCard = (advert) => {
+  const {offer, author} = advert;
+
+  const cloneCard = card.cloneNode(true);
+  cloneCard.querySelector('.popup__avatar').src = author.avatar;
+  cloneCard.querySelector('.popup__title').textContent = offer.title;
+  cloneCard.querySelector('.popup__text--address').textContent = offer.address;
+  cloneCard.querySelector('.popup__type').textContent = typeHouseDict[offer.type];
+  cloneCard.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
+  cloneCard.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${getNoun(offer.rooms, 'комната', 'комнаты', 'комнат')} для ${offer.guests} ${getNoun(offer.guests, 'гостя', 'гостей', 'гостей')}`;
+  cloneCard.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  cloneCard.querySelector('.popup__description').textContent = offer.description;
+  const description = cloneCard.querySelector('.popup__description');
+  hidesBlock(description, offer.description);
+
+  createPhotoList(cloneCard, offer.photos);
+  createFeatureList(cloneCard, offer.features);
+
+  return cloneCard;
 };
-createCard(arrayCards[0]);
+
+export {createCard};
