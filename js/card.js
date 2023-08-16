@@ -1,4 +1,4 @@
-import {getNoun} from './util.js';
+import { getNoun } from './util.js';
 
 const card = document.querySelector ('#card').content.querySelector('.popup');
 
@@ -10,28 +10,24 @@ const typeHouseDict = {
   hotel: 'Отель'
 };
 
-const hidesBlock = (block, content) => {
-
+const hideBlock = (block, content) => {
   if (!content || content.length === 0) {
     block.style.display = 'none';
-
   }
-
 };
 
 
 const createPhotoList = (element, photos)=> {
   const imgItem = element.querySelector('.popup__photo');
   const photoContainer = element.querySelector ('.popup__photos');
-  hidesBlock(photoContainer, photos);
+  hideBlock(photoContainer, photos);
   photoContainer.innerHTML = '';
 
   photos.forEach ((photo) => {
     const cloneImg = imgItem.cloneNode(true);
     cloneImg.src = photo;
     photoContainer.append(cloneImg);
-  }
-  );
+  });
 
 };
 
@@ -39,7 +35,7 @@ const createPhotoList = (element, photos)=> {
 const createFeatureList = (element, features) => {
   const featureContainer = element.querySelector('.popup__features');
   const featureItem = element.querySelector('.popup__feature');
-  hidesBlock(featureContainer, features);
+  hideBlock(featureContainer, features);
   featureContainer.innerHTML = '';
 
   features.forEach ((feature) => {
@@ -63,7 +59,7 @@ const createCard = (advert) => {
   cloneCard.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   cloneCard.querySelector('.popup__description').textContent = offer.description;
   const description = cloneCard.querySelector('.popup__description');
-  hidesBlock(description, offer.description);
+  hideBlock(description, offer.description);
 
   createPhotoList(cloneCard, offer.photos);
   createFeatureList(cloneCard, offer.features);
