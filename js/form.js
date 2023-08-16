@@ -1,15 +1,26 @@
 const mapFilter = document.querySelector ('.map__filters');
 const adForm = document.querySelector ('.ad-form');
 
-const disabledForm = (form) => {
-  form.classList.add (`${form.className}--disabled`);
+const fieldsetSelects = document.querySelectorAll('fieldset, select');
 
-  for(let i = 0; i < form.children.length; i++){
-    form[i].disabled = true;
-  }
+const disableForm = () => {
+  adForm.classList.add ('ad-form--disabled');
+  mapFilter.classList.add ('map__filters--disabled');
+
+  fieldsetSelects.forEach((fieldsetSelect) => {
+    fieldsetSelect.disabled = true;
+  });
+
 };
 
-disabledForm(mapFilter);
-disabledForm(adForm);
+const unlocksForm = () => {
+  adForm.classList.remove ('ad-form--disabled');
+  mapFilter.classList.remove ('map__filters--disabled');
 
-export { disabledForm };
+  fieldsetSelects.forEach((fieldsetSelect) => {
+    fieldsetSelect.disabled = false;
+  });
+
+};
+
+export { disableForm, unlocksForm };
