@@ -1,6 +1,5 @@
 const mapFilter = document.querySelector ('.map__filters');
 const adForm = document.querySelector ('.ad-form');
-
 const fieldsetSelects = document.querySelectorAll('fieldset, select');
 
 const disableForm = () => {
