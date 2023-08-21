@@ -1,3 +1,5 @@
+import {createSlider} from './slider.js';
+
 const adForm = document.querySelector ('.ad-form');
 const title = adForm.querySelector('#title');
 
@@ -40,9 +42,12 @@ pristine.addValidator(price, validatePrice, getErrorMessage);
 
 const onChangeType = () => {
   const type = adForm.querySelector('#type');
+  createSlider(minPrice[type.value]);
   price.placeholder = minPrice[type.value];
   pristine.validate(price);
 };
+
+// createSlider(price.placeholder);
 
 adForm.querySelector('#type').addEventListener ('change', onChangeType);
 

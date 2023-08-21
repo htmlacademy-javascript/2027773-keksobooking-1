@@ -1,6 +1,5 @@
 import { generateOffers } from './data.js';
 import { createCard } from './card.js';
-import './slider.js';
 import './form-validate.js';
 import { createInnerMarker } from'./map.js';
 
