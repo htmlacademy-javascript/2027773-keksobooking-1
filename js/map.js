@@ -1,6 +1,10 @@
 import { disableForm, unlocksForm } from './form.js';
 
-disableForm ();
+const inputAddress = document.querySelector('#address');
+const defaultLat = 35.68951;
+const defaultLng = 139.69212;
+
+disableForm();
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -8,8 +12,8 @@ const map = L.map('map-canvas')
   })
   .setView(
     {
-      lat: 35.6895,
-      lng: 139.692,
+      lat: defaultLat,
+      lng: defaultLng,
     }, 12);
 
 L.tileLayer(
@@ -47,10 +51,10 @@ const createInnerMarker = (offer, card) => {
     .bindPopup(card);
 };
 
-const marker = L.marker(
+const mainMarker = L.marker(
   {
-    lat: 35.6895,
-    lng: 139.692,
+    lat: defaultLat,
+    lng: defaultLng,
   },
   {
     draggable: true,
@@ -58,10 +62,13 @@ const marker = L.marker(
   }
 );
 
-marker.addTo(map);
+inputAddress.value = `${defaultLat}, ${defaultLng}`;
 
-marker.on('moveend', (evt) => {
-  document.querySelector('#address').value = evt.target.getLatLng();
+
+mainMarker.addTo(map);
+
+mainMarker.on('move', (evt) => {
+  inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
 export { createInnerMarker };
