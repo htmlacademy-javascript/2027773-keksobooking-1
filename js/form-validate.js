@@ -1,4 +1,4 @@
-import { createSlider } from './slider.js';
+import { updateSlider } from './slider.js';
 import { getNoun } from './util.js';
 
 const minPrice = {
@@ -54,7 +54,7 @@ const validatePrice = (value) => value && value >= minPrice[type.value] && value
 const getErrorMessagePrice = () => `Цена от ${ minPrice[type.value] } до ${ maxValuePrice }`;
 
 const onChangeType = () => {
-  createSlider(minPrice[type.value]);
+  updateSlider(minPrice[type.value]);
   price.placeholder = minPrice[type.value];
   pristine.validate(price);
 };

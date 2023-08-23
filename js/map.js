@@ -1,27 +1,5 @@
-import { disableForm, unlocksForm } from './form.js';
-
-const inputAddress = document.querySelector('#address');
-const defaultLat = 35.68951;
-const defaultLng = 139.69212;
-
-disableForm();
-
-const map = L.map('map-canvas')
-  .on('load', () => {
-    unlocksForm();
-  })
-  .setView(
-    {
-      lat: defaultLat,
-      lng: defaultLng,
-    }, 12);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
+import { unlocksForm } from './form.js';
+import { createCard } from './card.js';
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -29,13 +7,22 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const pinIcon = L.icon({
+const pinInnerIcon = L.icon({
   iconUrl: 'img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
-const createInnerMarker = (offer, card) => {
+const inputAddress = document.querySelector('#address');
+const defaultLat = 35.68951;
+const defaultLng = 139.69212;
+const zoomDefault = 12;
+const tileDefault = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const attributTileDefault = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+const map = L.map('map-canvas');
+
+const renderInnerMarker = (offer) => {
   const {location} = offer;
   const innerMarker = L.marker(
     {
@@ -43,12 +30,19 @@ const createInnerMarker = (offer, card) => {
       lng: location.lng,
     },
     {
-      icon: pinIcon,
+      icon: pinInnerIcon,
     }
   );
   innerMarker
     .addTo(map)
-    .bindPopup(card);
+    .bindPopup(createCard(offer));
+};
+
+const renderMarkers = (markers) => {
+
+  markers.forEach ((marker) => {
+    renderInnerMarker(marker);
+  });
 };
 
 const mainMarker = L.marker(
@@ -62,13 +56,33 @@ const mainMarker = L.marker(
   }
 );
 
-inputAddress.value = `${defaultLat}, ${defaultLng}`;
-
-
-mainMarker.addTo(map);
-
-mainMarker.on('move', (evt) => {
+const onMainMarkerMove = (evt) => {
   inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
-});
+};
 
-export { createInnerMarker };
+
+const initMap = (markers) => {
+  map.on('load', () => {
+    unlocksForm();
+  })
+    .setView(
+      {
+        lat: defaultLat,
+        lng: defaultLng,
+      }, zoomDefault);
+
+  L.tileLayer(
+    tileDefault,
+    {
+      attribution: attributTileDefault,
+    },
+  ).addTo(map);
+
+  inputAddress.value = `${defaultLat}, ${defaultLng}`;
+
+  renderMarkers(markers);
+  mainMarker.addTo(map);
+  mainMarker.on('move', onMainMarkerMove);
+};
+
+export { initMap };
