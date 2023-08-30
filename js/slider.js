@@ -1,14 +1,14 @@
 
 const sliderElement = document.querySelector('.ad-form__slider');
 const valueElement = document.querySelector('#price');
-const maxValue = 100000;
+const MAX_VALUE = 100000;
 
 noUiSlider.create(sliderElement, {
   start: 0,
   step: 1000,
   range: {
-    'min': 0,
-    'max': maxValue,
+    min: 0,
+    max: MAX_VALUE,
   },
 });
 sliderElement.noUiSlider.on('update', () => {

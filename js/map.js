@@ -13,12 +13,13 @@ const pinInnerIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const inputAddress = document.querySelector('#address');
-const defaultLat = 35.68951;
-const defaultLng = 139.69212;
-const zoomDefault = 12;
-const tileDefault = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const attributTileDefault = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const INPUT_ADDRESS = document.querySelector('#address');
+const DEFAULT_LAT = 35.68951;
+const DEFAULT_LNG = 139.69212;
+const ZOOM_DEFAULT = 12;
+const TITLE_DEFAULT = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const ATTRIBUT_TILE_DEFAULT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
 
 const map = L.map('map-canvas');
 
@@ -47,8 +48,8 @@ const renderMarkers = (markers) => {
 
 const mainMarker = L.marker(
   {
-    lat: defaultLat,
-    lng: defaultLng,
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
   },
   {
     draggable: true,
@@ -57,7 +58,8 @@ const mainMarker = L.marker(
 );
 
 const onMainMarkerMove = (evt) => {
-  inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+  const coords = evt.target.getLatLng();
+  INPUT_ADDRESS.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
 };
 
 
@@ -67,18 +69,18 @@ const initMap = (markers) => {
   })
     .setView(
       {
-        lat: defaultLat,
-        lng: defaultLng,
-      }, zoomDefault);
+        lat: DEFAULT_LAT,
+        lng: DEFAULT_LNG,
+      }, ZOOM_DEFAULT);
 
   L.tileLayer(
-    tileDefault,
+    TITLE_DEFAULT,
     {
-      attribution: attributTileDefault,
+      attribution: ATTRIBUT_TILE_DEFAULT,
     },
   ).addTo(map);
 
-  inputAddress.value = `${defaultLat}, ${defaultLng}`;
+  INPUT_ADDRESS.value = `${DEFAULT_LAT}, ${DEFAULT_LNG}`;
 
   renderMarkers(markers);
   mainMarker.addTo(map);
