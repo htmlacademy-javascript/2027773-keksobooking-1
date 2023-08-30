@@ -1,12 +1,10 @@
 import { generateOffers } from './data.js';
-import { createCard } from './card.js';
 import { setupValidation } from './form-validate.js';
-import { createInnerMarker } from'./map.js';
+import { initMap } from'./map.js';
+import { disableForm } from './form.js';
 
 const offers = generateOffers();
-
-offers.forEach ((offer) => {
-  createInnerMarker(offer, createCard(offer));
-});
+disableForm();
+initMap(offers);
 
 setupValidation();
