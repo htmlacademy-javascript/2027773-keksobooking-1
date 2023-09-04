@@ -1,5 +1,7 @@
 import { createSlider } from './slider.js';
 import { getNoun } from './util.js';
+import { sendData } from './api.js';
+import {switchSubmitButton} from './form.js';
 
 const minPrice = {
   bungalow: 0,
@@ -71,7 +73,10 @@ const getErrorMessageRoom = () => `Условия: ${roomNumber.value} ${getNoun
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  if (pristine.validate()) {
+    sendData(new FormData(evt.target));
+    switchSubmitButton(true);
+  }
 };
 
 export const setupValidation = () => {

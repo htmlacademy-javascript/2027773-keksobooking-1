@@ -23,12 +23,13 @@ const createPhotoList = (element, photos)=> {
   hideBlock(photoContainer, photos);
   photoContainer.innerHTML = '';
 
-  photos.forEach ((photo) => {
-    const cloneImg = imgItem.cloneNode(true);
-    cloneImg.src = photo;
-    photoContainer.append(cloneImg);
-  });
-
+  if(photos) {
+    photos.forEach ((photo) => {
+      const cloneImg = imgItem.cloneNode(true);
+      cloneImg.src = photo;
+      photoContainer.append(cloneImg);
+    });
+  }
 };
 
 
@@ -37,13 +38,13 @@ const createFeatureList = (element, features) => {
   const featureItem = element.querySelector('.popup__feature');
   hideBlock(featureContainer, features);
   featureContainer.innerHTML = '';
-
-  features.forEach ((feature) => {
-    const cloneFeature = featureItem.cloneNode(true);
-    cloneFeature.classList = `popup__feature popup__feature--${ feature}`;
-    featureContainer.append(cloneFeature);
-  });
-
+  if(features) {
+    features.forEach ((feature) => {
+      const cloneFeature = featureItem.cloneNode(true);
+      cloneFeature.classList = `popup__feature popup__feature--${ feature}`;
+      featureContainer.append(cloneFeature);
+    });
+  }
 };
 
 const createCard = (advert) => {

@@ -1,14 +1,12 @@
-import { disableForm, unlocksForm } from './form.js';
+// import { unlockMapFilters } from './form.js';
 
 const inputAddress = document.querySelector('#address');
 const defaultLat = 35.68951;
 const defaultLng = 139.69212;
 
-disableForm();
-
 const map = L.map('map-canvas')
   .on('load', () => {
-    unlocksForm();
+    // unlockMapFilters();
   })
   .setView(
     {
@@ -62,13 +60,24 @@ const mainMarker = L.marker(
   }
 );
 
-inputAddress.value = `${defaultLat}, ${defaultLng}`;
+const getDefaultInputAddress = () => {
+  inputAddress.value = `${defaultLat}, ${defaultLng}`;
+};
 
+getDefaultInputAddress();
 
 mainMarker.addTo(map);
+
+const defaultMainMarker = () =>{
+  mainMarker.setLatLng({
+    lat: defaultLat,
+    lng: defaultLng,
+  }
+  );
+};
 
 mainMarker.on('move', (evt) => {
   inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-export { createInnerMarker };
+export { createInnerMarker, defaultMainMarker, getDefaultInputAddress };

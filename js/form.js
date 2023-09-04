@@ -1,25 +1,51 @@
+import { defaultMainMarker, getDefaultInputAddress } from './map.js';
+
 const mapFilter = document.querySelector ('.map__filters');
 const adForm = document.querySelector ('.ad-form');
-const fieldsetSelects = document.querySelectorAll('fieldset, select');
+const fieldsetSelectsForm = adForm.querySelectorAll('fieldset, select');
+const fieldsetSelectsFilter = mapFilter.querySelectorAll('fieldset, select');
+const submitButton = adForm.querySelector('.ad-form__submit');
+const resetButton = adForm.querySelector('.ad-form__reset');
+
+const switchSubmitButton = (state) => {
+  submitButton.disabled = state;
+};
+
+const resetForm = () => {
+  adForm.reset();
+  getDefaultInputAddress();
+  defaultMainMarker();
+};
+
+resetButton.addEventListener('click', ()=>{
+  resetForm();
+});
+
+const switchElementState = (elements, state) => {
+  elements.forEach((element) => {
+    element.disabled = state;
+  });
+};
 
 const disableForm = () => {
   adForm.classList.add ('ad-form--disabled');
+  switchElementState(fieldsetSelectsForm, true);
+};
+
+const disableMapFilters = () => {
   mapFilter.classList.add ('map__filters--disabled');
-
-  fieldsetSelects.forEach((fieldsetSelect) => {
-    fieldsetSelect.disabled = true;
-  });
-
+  switchElementState(fieldsetSelectsFilter, true);
 };
 
-const unlocksForm = () => {
+const unlockForm = () => {
   adForm.classList.remove ('ad-form--disabled');
-  mapFilter.classList.remove ('map__filters--disabled');
+  switchElementState(fieldsetSelectsForm, false);
+};
 
-  fieldsetSelects.forEach((fieldsetSelect) => {
-    fieldsetSelect.disabled = false;
-  });
+const unlockMapFilters = () => {
+  mapFilter.classList.remove ('map__filters--disabled');
+  switchElementState(fieldsetSelectsFilter, false);
 
 };
 
-export { disableForm, unlocksForm };
+export { disableForm, unlockForm, disableMapFilters, unlockMapFilters, switchSubmitButton, resetForm };
