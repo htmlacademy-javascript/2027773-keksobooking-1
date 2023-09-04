@@ -1,4 +1,3 @@
-// import { unlockMapFilters } from './form.js';
 
 const inputAddress = document.querySelector('#address');
 const defaultLat = 35.68951;
@@ -6,7 +5,6 @@ const defaultLng = 139.69212;
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    // unlockMapFilters();
   })
   .setView(
     {
