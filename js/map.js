@@ -1,22 +1,6 @@
-const inputAddress = document.querySelector('#address');
-const defaultLat = 35.68951;
-const defaultLng = 139.69212;
-
-const map = L.map('map-canvas')
-  .on('load', () => {
-  })
-  .setView(
-    {
-      lat: defaultLat,
-      lng: defaultLng,
-    }, 12);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
+import { unlockForm } from './form.js';
+import { createCard } from './card.js';
+import { getData } from './api.js';
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -24,13 +8,22 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const pinIcon = L.icon({
+const pinInnerIcon = L.icon({
   iconUrl: 'img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
-const createInnerMarker = (offer, card) => {
+const inputAddress = document.querySelector('#address');
+const DEFAULT_LAT = 35.68951;
+const DEFAULT_LNG = 139.69212;
+const ZOOM_DEFAULT = 12;
+const TITLE_DEFAULT = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const ATTRIBUT_TILE_DEFAULT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+const map = L.map('map-canvas');
+
+const renderInnerMarker = (offer) => {
   const {location} = offer;
   const innerMarker = L.marker(
     {
@@ -38,18 +31,25 @@ const createInnerMarker = (offer, card) => {
       lng: location.lng,
     },
     {
-      icon: pinIcon,
+      icon: pinInnerIcon,
     }
   );
   innerMarker
     .addTo(map)
-    .bindPopup(card);
+    .bindPopup(createCard(offer));
+};
+
+const renderMarkers = (markers) => {
+
+  markers.forEach ((marker) => {
+    renderInnerMarker(marker);
+  });
 };
 
 const mainMarker = L.marker(
   {
-    lat: defaultLat,
-    lng: defaultLng,
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
   },
   {
     draggable: true,
@@ -58,23 +58,52 @@ const mainMarker = L.marker(
 );
 
 const getDefaultInputAddress = () => {
-  inputAddress.value = `${defaultLat}, ${defaultLng}`;
+  inputAddress.value = `${DEFAULT_LAT}, ${DEFAULT_LNG}`;
 };
 
-getDefaultInputAddress();
+const onMainMarkerMove = (evt) => {
+  const coords = evt.target.getLatLng();
+  inputAddress.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
+};
 
-mainMarker.addTo(map);
-
-const defaultMainMarker = () =>{
+const defaultMainMarker = () => {
   mainMarker.setLatLng({
-    lat: defaultLat,
-    lng: defaultLng,
-  }
-  );
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
+  });
 };
 
-mainMarker.on('move', (evt) => {
-  inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
-});
+const initMap = () => {
+  map.on('load', () => {
+    unlockForm();
+    // getData().then
+  })
+    .setView(
+      {
+        lat: DEFAULT_LAT,
+        lng: DEFAULT_LNG,
+      }, ZOOM_DEFAULT);
 
-export { createInnerMarker, defaultMainMarker, getDefaultInputAddress };
+  mainMarker.on('move', (evt) => {
+    inputAddress.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+  });
+
+  L.tileLayer(
+    TITLE_DEFAULT,
+    {
+      attribution: ATTRIBUT_TILE_DEFAULT,
+    },
+  ).addTo(map);
+
+
+
+  getDefaultInputAddress();
+  // renderMarkers(getData);
+  mainMarker.addTo(map);
+  mainMarker.on('move', onMainMarkerMove);
+};
+
+
+
+export { initMap, defaultMainMarker, getDefaultInputAddress };
+

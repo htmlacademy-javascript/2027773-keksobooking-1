@@ -1,17 +1,8 @@
-import { createCard } from './card.js';
 import { setupValidation } from './form-validate.js';
-import { createInnerMarker } from'./map.js';
-import { getData } from './api.js';
-import { disableMapFilters } from './form.js';
+import { disableMapFilters, disableForm } from './form.js';
+import { initMap } from'./map.js';
 
-const MAX_OFFERS = 10;
-
+disableForm();
+initMap();
 disableMapFilters();
-
-getData((offers) => {
-  offers.slice(0, MAX_OFFERS).forEach ((offer) => {
-    createInnerMarker(offer, createCard(offer));
-  });
-});
-
 setupValidation();

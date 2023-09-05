@@ -1,4 +1,4 @@
-import { createSlider } from './slider.js';
+import { updateSlider } from './slider.js';
 import { getNoun } from './util.js';
 import { sendData } from './api.js';
 import {switchSubmitButton} from './form.js';
@@ -56,7 +56,7 @@ const validatePrice = (value) => value && value >= minPrice[type.value] && value
 const getErrorMessagePrice = () => `Цена от ${ minPrice[type.value] } до ${ maxValuePrice }`;
 
 const onChangeType = () => {
-  createSlider(minPrice[type.value]);
+  updateSlider(minPrice[type.value]);
   price.placeholder = minPrice[type.value];
   pristine.validate(price);
 };
