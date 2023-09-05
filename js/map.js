@@ -1,4 +1,3 @@
-
 const inputAddress = document.querySelector('#address');
 const defaultLat = 35.68951;
 const defaultLng = 139.69212;
