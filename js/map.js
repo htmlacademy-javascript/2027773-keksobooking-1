@@ -1,4 +1,4 @@
-import { unlockForm } from './form.js';
+import { unlockForm, unlockMapFilters } from './form.js';
 import { createCard } from './card.js';
 import { getData } from './api.js';
 
@@ -20,6 +20,7 @@ const DEFAULT_LNG = 139.69212;
 const ZOOM_DEFAULT = 12;
 const TITLE_DEFAULT = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const ATTRIBUT_TILE_DEFAULT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const MAX_OFFERS = 10;
 
 const map = L.map('map-canvas');
 
@@ -76,7 +77,13 @@ const defaultMainMarker = () => {
 const initMap = () => {
   map.on('load', () => {
     unlockForm();
-    // getData().then
+    getData()
+      .then((offers) => {
+        if (offers) {
+          unlockMapFilters();
+          renderMarkers(offers.slice(0,MAX_OFFERS));
+        }
+      });
   })
     .setView(
       {
@@ -95,14 +102,10 @@ const initMap = () => {
     },
   ).addTo(map);
 
-
-
   getDefaultInputAddress();
-  // renderMarkers(getData);
   mainMarker.addTo(map);
   mainMarker.on('move', onMainMarkerMove);
 };
-
 
 
 export { initMap, defaultMainMarker, getDefaultInputAddress };

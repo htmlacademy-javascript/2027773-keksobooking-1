@@ -17,9 +17,7 @@ const resetForm = () => {
   defaultMainMarker();
 };
 
-resetButton.addEventListener('click', ()=>{
-  resetForm();
-});
+resetButton.addEventListener('click',resetForm);
 
 const switchElementState = (elements, state) => {
   elements.forEach((element) => {

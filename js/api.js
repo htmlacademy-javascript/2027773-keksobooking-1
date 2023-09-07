@@ -1,41 +1,68 @@
-import { createMessageErrorData, createSuccessMessageForm, createErrorMessageForm } from './messages.js';
-import { unlockMapFilters, switchSubmitButton, resetForm } from './form.js';
+import { createMessageErrorData, createErrorMessageForm } from './messages.js';
 
-const getData = (onSuccess) => {
-  fetch('https://28.javascript.pages.academy/keksobooking/data')
-    .then((response) => response.json())
-    .then((offers) => {
-      if(offers) {
-        onSuccess(offers);
-        unlockMapFilters();
-      }
-    })
-    .catch(() => {
-      createMessageErrorData();
-    });
+const BASE_URL = 'https://28.javascript.pages.academy/keksobooking';
+const Route = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
 };
 
-const sendData = (body) => {
-  fetch(
-    'https://28.javascript.pages.academy/keksobooking',
-    {
-      method: 'POST',
-      body,
-    })
+const ErrorText = {
+  GET_DATA: createMessageErrorData,
+  SEND_DATA: createErrorMessageForm,
+};
+
+const load = (route, errorText, method = 'GET', body = null) =>
+  fetch(`${BASE_URL}${route}`, {method, body})
     .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } throw new Error();
 
-      if (response.ok){
-        switchSubmitButton(false);
-        createSuccessMessageForm();
-        resetForm();
-      } else {
-        switchSubmitButton(false);
-        createErrorMessageForm();
-      }
     })
     .catch(() => {
-      createErrorMessageForm();
+      errorText();
     });
-};
 
-export { getData, sendData };
+const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA, 'GET');
+
+const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, 'POST', body);
+
+export {getData, sendData};
+
+// const load = (route, error, method = 'GET', body = null) => {
+//   fetch(`${BASE_URL}${route}`, {method, body})
+//     .then((response) => {
+//       if (!response.ok) {
+//         throw new Error();
+//       } return response.json();
+//     })
+//     .catch(() => error
+//     );
+// };
+
+// const getData = () => load(Route.GET_DATA, createMessageErrorData());
+// console.log(load(Route.GET_DATA, createMessageErrorData()));
+// const sendData = (body) => {
+//   fetch(
+//     'https://28.javascript.pages.academy/keksobooking',
+//     {
+//       method: 'POST',
+//       body,
+//     })
+//     .then((response) => {
+
+//       if (response.ok){
+//         switchSubmitButton(false);
+//         createSuccessMessageForm();
+//         resetForm();
+//       } else {
+//         switchSubmitButton(false);
+//         createErrorMessageForm();
+//       }
+//     })
+//     .catch(() => {
+//       createErrorMessageForm();
+//     });
+// };
+
+// export { getData, sendData };
