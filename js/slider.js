@@ -16,7 +16,7 @@ sliderElement.noUiSlider.on('update', () => {
 });
 
 const updateSlider = (value) => {
-  sliderElement.noUiSlider.set([value]);
+  sliderElement.noUiSlider.set(value);
 };
 
 export { updateSlider };

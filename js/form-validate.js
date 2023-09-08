@@ -1,5 +1,9 @@
 import { updateSlider } from './slider.js';
 import { getNoun } from './util.js';
+import { sendData } from './api.js';
+import {setDisableState, resetForm} from './form.js';
+import { createSuccessMessageForm } from './messages.js';
+
 
 const minPrice = {
   bungalow: 0,
@@ -53,8 +57,14 @@ const validatePrice = (value) => value && value >= minPrice[type.value] && value
 
 const getErrorMessagePrice = () => `Цена от ${ minPrice[type.value] } до ${ maxValuePrice }`;
 
+price.value = '';
+price.placeholder = minPrice[type.value];
+
+const onChangePrice = () => {
+  updateSlider(price.value);
+};
+
 const onChangeType = () => {
-  updateSlider(minPrice[type.value]);
   price.placeholder = minPrice[type.value];
   pristine.validate(price);
 };
@@ -71,7 +81,15 @@ const getErrorMessageRoom = () => `Условия: ${roomNumber.value} ${getNoun
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  if (pristine.validate()) {
+    setDisableState(true);
+    sendData(new FormData(evt.target))
+      .then (() => {
+        resetForm();
+        createSuccessMessageForm();
+      })
+      .finally(() => setDisableState(false));
+  }
 };
 
 export const setupValidation = () => {
@@ -79,6 +97,7 @@ export const setupValidation = () => {
   pristine.addValidator(price, validatePrice, getErrorMessagePrice);
   pristine.addValidator(capacity, validateRoom, getErrorMessageRoom);
 
+  price.addEventListener ('change', onChangePrice);
   type.addEventListener ('change', onChangeType);
   timeIn.addEventListener ('change', onChangeTime);
   timeOut.addEventListener ('change', onChangeTime);
