@@ -1,41 +1,52 @@
-const successMessage = document.querySelector ('#success').content.querySelector('.success');
-const errorMessage = document.querySelector ('#error').content.querySelector('.error');
+const successMessage = document.querySelector ('#success')
+  .content
+  .querySelector('.success')
+  .cloneNode(true);
+const errorMessage = document.querySelector ('#error')
+  .content
+  .querySelector('.error')
+  .cloneNode(true);
 const closeButton = errorMessage.querySelector ('.error__button');
 
-const onEscClose = (message) => {
-  document.addEventListener('keydown', (evt) => {
-    if (evt.code === 'Escape') {
-      message.remove();
-    }
-  });
+const onEscClose = (evt) => {
+  if (evt.code === 'Escape') {
+    removeSuccessMessageForm();
+    removeErrorMessageForm();
+    document.removeEventListener('keydown',onEscClose);
+  }
 };
 
-const onCloseButton = (message) => {
-  closeButton.addEventListener('click', () => {
-    message.remove();
-  });
+const onCloseButton = () => {
+  removeErrorMessageForm();
+  closeButton.removeEventListener('click', onCloseButton);
 };
 
-const onClickFree = (message) => {
-  document.addEventListener('click', () => {
-    message.remove();
-  });
+const onClickFree = () => {
+  removeSuccessMessageForm();
+  removeErrorMessageForm();
+  document.removeEventListener('click', onClickFree);
 };
 
 const createSuccessMessageForm = () => {
-  const message = successMessage.cloneNode(true);
-  document.body.appendChild(message);
-  onClickFree(message);
-  onEscClose(message);
+  document.body.appendChild(successMessage);
+  document.addEventListener('keydown',onEscClose);
+  document.addEventListener('click', onClickFree);
 };
 
+function removeSuccessMessageForm () {
+  successMessage.remove();
+}
+
 const createErrorMessageForm = () => {
-  const message = errorMessage.cloneNode(true);
-  document.body.appendChild(message);
-  onClickFree(message);
-  onEscClose(message);
-  onCloseButton(message);
+  document.body.appendChild(errorMessage);
+  document.addEventListener('keydown',onEscClose);
+  document.addEventListener('click', onClickFree);
+  closeButton.addEventListener('click', onCloseButton);
 };
+
+function removeErrorMessageForm () {
+  errorMessage.remove();
+}
 
 const createMessageErrorData = () => {
   const messageError = document.createElement('div');

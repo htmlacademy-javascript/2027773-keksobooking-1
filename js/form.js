@@ -1,4 +1,4 @@
-import { defaultMainMarker, getDefaultInputAddress } from './map.js';
+import { setMainMarkerDefault, setDefaultInputAddress } from './map.js';
 
 const mapFilter = document.querySelector ('.map__filters');
 const adForm = document.querySelector ('.ad-form');
@@ -7,17 +7,20 @@ const fieldsetSelectsFilter = mapFilter.querySelectorAll('fieldset, select');
 const submitButton = adForm.querySelector('.ad-form__submit');
 const resetButton = adForm.querySelector('.ad-form__reset');
 
-const switchSubmitButton = (state) => {
+const setDisableState = (state) => {
   submitButton.disabled = state;
 };
 
 const resetForm = () => {
   adForm.reset();
-  getDefaultInputAddress();
-  defaultMainMarker();
+  setDefaultInputAddress();
+  setMainMarkerDefault();
 };
 
-resetButton.addEventListener('click',resetForm);
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
+});
 
 const switchElementState = (elements, state) => {
   elements.forEach((element) => {
@@ -46,4 +49,4 @@ const unlockMapFilters = () => {
 
 };
 
-export { disableForm, unlockForm, disableMapFilters, unlockMapFilters, switchSubmitButton, resetForm };
+export { disableForm, unlockForm, disableMapFilters, unlockMapFilters, setDisableState, resetForm };

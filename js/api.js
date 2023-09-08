@@ -14,13 +14,13 @@ const ErrorText = {
 const load = (route, errorText, method = 'GET', body = null) =>
   fetch(`${BASE_URL}${route}`, {method, body})
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      } return response.json();
 
     })
     .catch(() => {
-      errorText();
+      throw new Error(errorText());
     });
 
 const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA, 'GET');
@@ -28,41 +28,3 @@ const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA, 'GET');
 const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, 'POST', body);
 
 export {getData, sendData};
-
-// const load = (route, error, method = 'GET', body = null) => {
-//   fetch(`${BASE_URL}${route}`, {method, body})
-//     .then((response) => {
-//       if (!response.ok) {
-//         throw new Error();
-//       } return response.json();
-//     })
-//     .catch(() => error
-//     );
-// };
-
-// const getData = () => load(Route.GET_DATA, createMessageErrorData());
-// console.log(load(Route.GET_DATA, createMessageErrorData()));
-// const sendData = (body) => {
-//   fetch(
-//     'https://28.javascript.pages.academy/keksobooking',
-//     {
-//       method: 'POST',
-//       body,
-//     })
-//     .then((response) => {
-
-//       if (response.ok){
-//         switchSubmitButton(false);
-//         createSuccessMessageForm();
-//         resetForm();
-//       } else {
-//         switchSubmitButton(false);
-//         createErrorMessageForm();
-//       }
-//     })
-//     .catch(() => {
-//       createErrorMessageForm();
-//     });
-// };
-
-// export { getData, sendData };
