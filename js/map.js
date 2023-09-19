@@ -25,6 +25,8 @@ const pinInnerIcon = L.icon({
 
 const map = L.map('map-canvas');
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const renderInnerMarker = (offer) => {
   const {location} = offer;
   const innerMarker = L.marker(
@@ -37,9 +39,16 @@ const renderInnerMarker = (offer) => {
     }
   );
   innerMarker
-    .addTo(map)
+    .addTo(markerGroup)
     .bindPopup(createCard(offer));
+
 };
+
+// const removeInnerMarkers = () => {
+
+// }
+
+// import { debounce } from './util.js';
 
 const renderMarkers = (markers) => {
 
@@ -75,10 +84,24 @@ const setMainMarkerDefault = () => {
   });
 };
 
-const initMap = (api) => {
+const setViewMapDefault = () => {
+  map.setView(
+    {
+      lat: DEFAULT_LAT,
+      lng: DEFAULT_LNG,
+    }, ZOOM_DEFAULT);
+};
+
+const resetMap = () => {
+  setDefaultInputAddress();
+  setMainMarkerDefault();
+  setViewMapDefault();
+};
+
+const initMap = (cb) => {
   map.on('load', () => {
     unlockForm();
-    api();
+    cb();
   })
     .setView(
       {
@@ -99,5 +122,5 @@ const initMap = (api) => {
 };
 
 
-export { initMap, setMainMarkerDefault, setDefaultInputAddress, renderMarkers };
+export { initMap, resetMap, renderMarkers, markerGroup };
 
