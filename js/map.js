@@ -27,6 +27,8 @@ const map = L.map('map-canvas');
 
 const markerGroup = L.layerGroup().addTo(map);
 
+const clearMarkers = () => markerGroup.clearLayers();
+
 const renderInnerMarker = (offer) => {
   const {location} = offer;
   const innerMarker = L.marker(
@@ -43,12 +45,6 @@ const renderInnerMarker = (offer) => {
     .bindPopup(createCard(offer));
 
 };
-
-// const removeInnerMarkers = () => {
-
-// }
-
-// import { debounce } from './util.js';
 
 const renderMarkers = (markers) => {
 
@@ -122,5 +118,5 @@ const initMap = (cb) => {
 };
 
 
-export { initMap, resetMap, renderMarkers, markerGroup };
+export { initMap, resetMap, renderMarkers, clearMarkers };
 
