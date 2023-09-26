@@ -19,4 +19,8 @@ const updateSlider = (value) => {
   sliderElement.noUiSlider.set(value);
 };
 
-export { updateSlider };
+const resetSlider = () => {
+  sliderElement.noUiSlider.reset();
+};
+
+export { updateSlider, resetSlider };

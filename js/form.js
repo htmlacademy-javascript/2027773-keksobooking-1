@@ -1,4 +1,5 @@
-import { setMainMarkerDefault, setDefaultInputAddress } from './map.js';
+import { resetMap } from './map.js';
+import { resetSlider } from './slider.js';
 
 const mapFilter = document.querySelector ('.map__filters');
 const adForm = document.querySelector ('.ad-form');
@@ -12,9 +13,9 @@ const setDisableState = (state) => {
 };
 
 const resetForm = () => {
+  resetSlider();
   adForm.reset();
-  setDefaultInputAddress();
-  setMainMarkerDefault();
+  resetMap();
 };
 
 resetButton.addEventListener('click', (evt) => {

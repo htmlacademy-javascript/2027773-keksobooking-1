@@ -16,21 +16,20 @@ const onEscClose = (evt) => {
   }
 };
 
-const onCloseButton = () => {
-  removeErrorMessageForm();
-  closeButton.removeEventListener('click', onCloseButton);
-};
+const onCloseButton = () => removeErrorMessageForm();
 
-const onClickFree = () => {
+
+const onClickOverlay = () => {
   removeSuccessMessageForm();
   removeErrorMessageForm();
-  document.removeEventListener('click', onClickFree);
+  document.removeEventListener('click', onClickOverlay);
+  document.removeEventListener('keydown',onEscClose);
 };
 
 const createSuccessMessageForm = () => {
   document.body.appendChild(successMessage);
   document.addEventListener('keydown',onEscClose);
-  document.addEventListener('click', onClickFree);
+  document.addEventListener('click', onClickOverlay);
 };
 
 function removeSuccessMessageForm () {
@@ -40,7 +39,7 @@ function removeSuccessMessageForm () {
 const createErrorMessageForm = () => {
   document.body.appendChild(errorMessage);
   document.addEventListener('keydown',onEscClose);
-  document.addEventListener('click', onClickFree);
+  document.addEventListener('click', onClickOverlay);
   closeButton.addEventListener('click', onCloseButton);
 };
 

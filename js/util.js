@@ -99,4 +99,13 @@ const getNoun = (number, one, two, five) => {
   return five;
 };
 
-export { generationRandomNumber, getRandomArr, getArrayRandElement, getRandomNumber, getNoun };
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+
+export { generationRandomNumber, getRandomArr, getArrayRandElement, getRandomNumber, getNoun, debounce };
