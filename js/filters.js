@@ -1,8 +1,11 @@
 import { clearMarkers, renderMarkers } from'./map.js';
+import { debounce } from './util.js';
 
 const MAX_OFFERS = 10;
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
+const DEFAULT_VALUE = 'any';
+const TIMEOUT_DELAY = 500;
 
 const housingType = document.querySelector('#housing-type');
 const housingRoom = document.querySelector('#housing-rooms');
@@ -18,33 +21,42 @@ const price = {
   high: (value) => value >= HIGH_PRICE,
 };
 
-const checkedFeatures = () => [...featuresFilter].filter((feature) => feature.checked);
+const isDefault = (selectValue) => selectValue.value === DEFAULT_VALUE;
 
-const checkFeatures = (features, check) => features && check.every((element) => features.includes(element.value));
+const filterOfferElement = (offer, housing) => offer === Number(housing.value) || isDefault(housing);
 
-const filterOfferElement = (offer, housing) => offer === Number(housing.value) || housing.value === 'any';
-
-const filterByType = (offer) => offer.type === housingType.value || housingType.value === 'any';
+const filterByType = (offer) => offer.type === housingType.value || isDefault(housingType);
 const filterByRooms = (offer) => filterOfferElement(offer.rooms, housingRoom);
 const filterByGuests = (offer) => filterOfferElement(offer.guests, housingGuests);
+const filterByPrice = (offer, checkPriceFn) => checkPriceFn(offer.price) || isDefault(housingPrice);
 
-const filterByFeatures = (offer) => checkFeatures(offer.features, checkedFeatures()) || checkedFeatures().length === 0;
+const filterByFeatures = ({features}, checkedFeatures) => {
+  if (!checkedFeatures.length) {
+    return true;
+  }
+
+  return features && checkedFeatures.every((element) => features.includes(element.value));
+};
 
 const setOffersFilter = (offers) => {
   const checkPriceFn = price[housingPrice.value];
-  const filterByPrice = (offer) => checkPriceFn(offer.price) || housingPrice.value === 'any';
-  return offers.filter(({offer}) => filterByRooms(offer) &&
-  filterByType(offer) &&
+  const checkedFeatures = [...featuresFilter].filter((feature) => feature.checked);
+
+  return offers.filter(({offer}) => (
+    filterByRooms(offer) &&
+    filterByType(offer) &&
     filterByGuests(offer) &&
-    filterByPrice(offer) &&
-    filterByFeatures(offer));
+    filterByPrice(offer, checkPriceFn) &&
+    filterByFeatures(offer, checkedFeatures)
+  ));
 };
+
 const setFiltersOffers = (offers) => {
   clearMarkers();
   const filteredData = setOffersFilter(offers);
   renderMarkers(filteredData.slice(0, MAX_OFFERS));
 };
 
-const setFiltersListener = (offers) => mapFilters.addEventListener('change', () => setFiltersOffers(offers));
+const setFiltersListener = (offers) => mapFilters.addEventListener('change', debounce(() => setFiltersOffers(offers), TIMEOUT_DELAY));
 
 export { setFiltersListener };
