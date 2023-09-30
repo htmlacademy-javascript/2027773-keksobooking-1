@@ -1,5 +1,7 @@
 import { resetMap } from './map.js';
 import { resetSlider } from './slider.js';
+import { resetPreviews } from './photo.js';
+import { resetFilters } from './filters.js';
 
 const mapFilter = document.querySelector ('.map__filters');
 const adForm = document.querySelector ('.ad-form');
@@ -16,6 +18,8 @@ const resetForm = () => {
   resetSlider();
   adForm.reset();
   resetMap();
+  resetPreviews();
+  resetFilters();
 };
 
 resetButton.addEventListener('click', (evt) => {

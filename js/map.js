@@ -1,7 +1,6 @@
 import { unlockForm } from './form.js';
 import { createCard } from './card.js';
 
-
 const DEFAULT_LAT = 35.68951;
 const DEFAULT_LNG = 139.69212;
 const ZOOM_DEFAULT = 12;
