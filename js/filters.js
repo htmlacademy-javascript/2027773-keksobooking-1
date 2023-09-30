@@ -57,6 +57,10 @@ const setFiltersOffers = (offers) => {
   renderMarkers(filteredData.slice(0, MAX_OFFERS));
 };
 
-const setFiltersListener = (offers) => mapFilters.addEventListener('change', debounce(() => setFiltersOffers(offers), TIMEOUT_DELAY));
+const resetFilters = () => mapFilters.reset();
 
-export { setFiltersListener };
+const setFiltersListener = (offers) => {
+  mapFilters.addEventListener('change', debounce(() => setFiltersOffers(offers), TIMEOUT_DELAY));
+  mapFilters.addEventListener('reset', debounce(() => setFiltersOffers(offers), TIMEOUT_DELAY));
+};
+export { setFiltersListener, resetFilters };

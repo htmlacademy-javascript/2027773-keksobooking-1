@@ -1,10 +1,10 @@
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const fieldsTypeFile = document.querySelectorAll ('.ad-form input[type = file]');
+const fieldsTypeFile = document.querySelectorAll ('.ad-form input[type=file]');
 const previewAvatar = document.querySelector ('.ad-form-header__preview img');
-const previewFotoHouse = document.querySelector ('.ad-form__photo');
+const previewPhotoHouse = document.querySelector ('.ad-form__photo');
 
-const onChangeTypeFile = () => {
+const setPhotoListeners = () => {
   fieldsTypeFile.forEach((element) => {
     element.addEventListener('change', () => {
       const file = element.files[0];
@@ -21,16 +21,15 @@ const onChangeTypeFile = () => {
         imgHouse.style.width = '100%';
         imgHouse.style.height = '100%';
         imgHouse.src = URL.createObjectURL(file);
-        previewFotoHouse.appendChild(imgHouse);
+        previewPhotoHouse.appendChild(imgHouse);
       }
-
     });
   });
 };
 
-const resetPreview = () => {
-  previewFotoHouse.innerHTML = '';
+const resetPreviews = () => {
+  previewPhotoHouse.innerHTML = '';
   previewAvatar.src = 'img/muffin-grey.svg';
 };
 
-export { onChangeTypeFile, resetPreview };
+export { setPhotoListeners, resetPreviews };

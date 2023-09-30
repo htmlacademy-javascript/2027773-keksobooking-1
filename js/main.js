@@ -3,7 +3,7 @@ import { disableMapFilters, disableForm, unlockMapFilters } from './form.js';
 import { initMap, renderMarkers } from'./map.js';
 import { getData } from './api.js';
 import { setFiltersListener } from './filters.js';
-import { onChangeTypeFile } from './photo.js';
+import { setPhotoListeners } from './photo.js';
 
 const MAX_OFFERS = 10;
 
@@ -15,8 +15,10 @@ const onMapLoad = () => {
       setFiltersListener(offers);
     });
 };
+
 disableForm();
-initMap(onMapLoad);
 disableMapFilters();
+
+initMap(onMapLoad);
 setupValidation();
-onChangeTypeFile();
+setPhotoListeners();
